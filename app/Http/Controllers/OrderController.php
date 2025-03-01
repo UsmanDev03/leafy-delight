@@ -35,12 +35,11 @@ class OrderController extends Controller
         
         try {
             // Prepare POST data for Stripe API
-            $fname = 'shabby';
-            $zipcode = '10001';
+          
             $postData = [
                 'amount' => (int)($validated['grandTotal'] * 100), // Convert to cents
                 'currency' => 'usd',
-                'description' => "Order Payment from " . $fname . ' ' . $validated['l_name'],
+                'description' => "Order Payment from " . $validated['f_name'] . ' ' . $validated['l_name'],
                 'source' => $validated['stripeToken'],
                 'receipt_email' => $validated['email'],
                 'shipping' => [
@@ -49,7 +48,7 @@ class OrderController extends Controller
                         'city' => $validated['city'],
                         'state' => $validated['state'],
                         'country' => $validated['country'],
-                        'postal_code' => $zipcode,
+                        'postal_code' => $validated['zip_code'],
                     ],
                 ],
             ];

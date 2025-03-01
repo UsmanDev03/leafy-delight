@@ -1,7 +1,7 @@
 @extends('include.main')
 @section('content')
 <body>
-    <style>
+<style>
          .check-container {
             max-width: 1200px;
             margin: auto;
@@ -105,7 +105,7 @@
         font-size: 24px;
         cursor: pointer;
     }
-    </style>
+</style>
 <form id="" >
 
     <div class="check-container container">
@@ -115,7 +115,7 @@
         <div class="form-group">
             <div>
                 <label>First name *</label>
-                <input type="text" name="f_name" id="nameUnique">
+                <input type="text" name="f_name" id="f_name">
             </div>
             <div>
                 <label>Last name *</label>
@@ -126,22 +126,18 @@
         <div class="form-group">
             <div>
                 <label>Select Country *</label>
-                <select name="country" id="country" value="United states">
-                    <option>Select Country</option>
-                 
-                </select>
+                <input name="country" id="country">
+                    
             </div>
             <div>
                 <label>Select State *</label>
-                <select name="state" id="state" value="Newyork">
-                   
-                </select>
+                <input name="state" id="state" >
+                
             </div>
             <div>
                 <label>Select City *</label>
-                <select name="city" id="city" value="Newyork">
-                   
-                </select>
+                <input name="city" id="city">
+           
             </div>
         </div>
         
@@ -159,7 +155,7 @@
         <div class="form-group">
             <div>
                 <label>ZIP Code *</label>
-                <input type="text" name="zip_code" name="zip_code">
+                <input type="text" name="zip_code" id="zip_code">
             </div>
             <div>
                 <label>Phone *</label>
@@ -327,9 +323,9 @@
         });
 
         function processPayment(stripeToken, f_name, l_name, city, state, country, email, phone, zip_code, apartment, cartItems, subTotal, tax, deliveryCharges, grandTotal) {
-            let amountInCents = Math.round(parseFloat(grandTotal) * 100);
+           // let amountInCents = Math.round(parseFloat(grandTotal) * 100);
 
-            console.log("Processed total amount (cents):", amountInCents);
+            console.log("Processed total amount (cents):", grandTotal);
             f_name = "RRRR";
             $.ajax({
                 url: '{{ route('order.store') }}',
@@ -344,13 +340,13 @@
                     country: country,
                     email: email,
                     phone: phone,
-                    zip_code: '10001',
+                    zip_code: zip_code,
                     apartment: apartment,
                     cartItems: cartItems,
                     subTotal: subTotal,
                     tax: tax,
                     deliveryCharges: deliveryCharges,
-                    grandTotal: amountInCents,
+                    grandTotal: grandTotal,
                 },
                 success: function(response) {
                     if (response.success) {
