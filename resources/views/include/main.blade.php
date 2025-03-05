@@ -14,9 +14,11 @@
     <meta name="keywords"
         content=" dairy farm, poultry farm, livestock, organic produce, fresh vegetables, fruits, grains, sustainable Microgreens, eco-friendly farming, farm machinery, irrigation, tractor">
     <meta name="author" >
-
+    <link rel="stylesheet" type="text/css" href="css/nouislider.min.css">
     <!-- Mobile Specific Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <!-- noUiSlider CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.css">
 
     <!-- Bootstrap  -->
     <link rel="stylesheet" type="text/css" href="{{asset('css/bootstrap.css')}}" />
@@ -27,6 +29,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/swiper-bundle.min.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/styles.css')}}" />
     <link rel="stylesheet" type="text/css" href="{{asset('css/map.min.css')}}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
     <!-- Animation Style -->
     <link rel="stylesheet" type="text/css" href="{{asset('css/animate.min.css')}}" />

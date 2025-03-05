@@ -248,7 +248,7 @@
                                 </div>
                             
                                 <div class="price-wrap price-left">
-                                    <p id="priceDisplay">Price: <span>--</span></p>
+                                    <p id="priceDisplay">Price:$ <span>--</span></p>
                                 </div>
 
                                 <p class="sub font-nunito">{{ $product->sec1_desc }}</p>
@@ -286,7 +286,7 @@
                                         <ul class="more-infor">
                                             <li>
                                                 <p>Category:
-                                                <select name="weight" id="weightSelect" class="form-control" style="width:200px">
+                                                <select name="weight" id="weightSelect" class="form-control" style="width:200px;height:30px;">
                                                     <option value="">Select Weight</option>
                                                     @foreach (json_decode($product->sec4_weight_price, true) ?? [] as $item)
                                                         <option value="{{ $item['weight'] }}" data-price="{{ $item['price'] }}">
@@ -328,6 +328,7 @@
                                                 <span class="btn-quantity minus-btn"><i
                                                         class="icon-arrow_down"></i></span>
                                             </div>
+                                            
                                             <button type="submit" class="tf-btn btn-add-cart">
                                                 <span class="text-style">
                                                     Add To Cart
@@ -450,9 +451,18 @@
                                             </a>
                                             <div class="pricing-star">
                                                 <div class="price-wrap">
-
-                                                <span class=" price-1">{{$ourproduct->sec1_del_price}}</span>
-                                                <span class=" price-2">{{$ourproduct->sec1_price}}</span>
+                                                @if($ourproduct->discount_price)
+                                                <span class=" price-1">
+                                                
+                                                ${{$ourproduct->discount_price}}
+                                                </span>
+                                                @else
+                                                {{$ourproduct->discount_price}}
+                                                @endif
+                                                @foreach (json_decode($ourproduct->sec4_weight_price, true) ?? [] as $item)
+                                                <span class=" price-2">${{ $item['price'] }}</span>
+                                                @endforeach
+                                                
                                                 </div>
                                                 <div class="wg-rating">
                                                     <i class="fa-solid fa-star"></i>

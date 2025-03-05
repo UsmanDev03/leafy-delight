@@ -16,7 +16,35 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\AddReviewController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\WishlistController;
+use Illuminate\Http\Request;
+use App\Http\Controllers\ContactController;
 
+
+
+Route::get('/filter-products', [ProductController::class, 'filterByPrice']);
+Route::get('/contact-responses', [ContactController::class, 'index'])->name('contact.index');
+Route::get('/contact-detail/{id}', [ContactController::class, 'show'])->name('admin.contact-detail');
+Route::delete('/contact-responses/{id}', [ContactController::class, 'destroy'])->name('contact.destroy');
+
+Route::post('/contact/submit', [ContactController::class, 'store'])->name('contact.submit');
+
+Route::get('/filter-by-weight', [ProductController::class, 'filterByWeight'])->name('filter.by.weight');
+
+Route::get('/wishlist/clear', function (Request $request) {
+    $request->session()->forget('wishlist'); // Forget the 'wishlist' session
+    return redirect()->back()->with('success', 'Wishlist cleared successfully!');
+})->name('wishlist.clear');
+
+
+Route::post('/wishlist/add', [WishlistController::class, 'addToWishlist'])->name('wishlist.add');
+Route::get('/wishlist', [WishlistController::class, 'viewWishlist'])->name('wishlist.view');
+Route::post('/wishlist/remove', [WishlistController::class, 'removeFromWishlist'])->name('wishlist.remove');
+
+Route::get('/admin/orders/{id}', [OrderController::class, 'show'])->name('order.show');
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::get('/orders/edit/{id}', [OrderController::class, 'edit'])->name('orders.edit');
+Route::delete('/orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
 Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
 

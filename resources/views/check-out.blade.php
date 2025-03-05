@@ -106,123 +106,133 @@
         cursor: pointer;
     }
 </style>
-<form id="" >
+<div class="container">
+    <div class="row">
 
-    <div class="check-container container">
-    
-        <h2>Billing details</h2>
-        
-        <div class="form-group">
-            <div>
-                <label>First name *</label>
-                <input type="text" name="f_name" id="f_name">
-            </div>
-            <div>
-                <label>Last name *</label>
-                <input type="text" name="l_name" id="l_name">
+        <div class="col-md-6">
+            <div class="check-container">
+                <h2>Billing Details</h2>
+
+                <div class="form-group">
+                    <div>
+                        <label>First Name *</label>
+                        <input type="text" name="f_name" id="f_name">
+                    </div>
+                    <div>
+                        <label>Last Name *</label>
+                        <input type="text" name="l_name" id="l_name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        <label>Select Country *</label>
+                        <input name="country" id="country">
+                    </div>
+                    <div>
+                        <label>Select State *</label>
+                        <input name="state" id="state">
+                    </div>
+                    <div>
+                        <label>Select City *</label>
+                        <input name="city" id="city">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        <label>Street Address *</label>
+                        <input type="text" name="street_address" id="street_address">
+                    </div>
+                    <div>
+                        <label>Apartment (optional)</label>
+                        <input type="text" name="apartment" id="apartment">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        <label>ZIP Code *</label>
+                        <input type="text" name="zip_code" id="zip_code">
+                    </div>
+                    <div>
+                        <label>Phone *</label>
+                        <input type="text" name="phone" id="phone">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        <label>Email Address *</label>
+                        <input type="email" name="email" id="email">
+                    </div>
+                </div>
+
+               
             </div>
         </div>
-        
-        <div class="form-group">
-            <div>
-                <label>Select Country *</label>
-                <input name="country" id="country">
-                    
-            </div>
-            <div>
-                <label>Select State *</label>
-                <input name="state" id="state" >
-                
-            </div>
-            <div>
-                <label>Select City *</label>
-                <input name="city" id="city">
-           
+
+        <div class="col-md-6">
+            
+            <div class="order-container">
+                <h2>Order Details</h2>
+
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                    </tr>
+                    @php
+                        $subTotal = 0;
+                        $taxRate = 0.10;
+                        $deliveryCharges = session('delivery_charges', 20);
+                    @endphp
+
+                    @foreach(session('cart', []) as $item)
+                        @php
+                            $itemTotal = $item['price'] * $item['quantity'];
+                            $subTotal += $itemTotal;
+                        @endphp
+                        <tr>
+                            <td style="display:none">{{ $item['id'] }}</td>
+                            <td>{{ $item['name'] }}</td>
+                            <td style="display:none">{{ $item['quantity'] }}</td>
+                            <td>${{ number_format($itemTotal, 2) }}</td>
+                        </tr>
+                    @endforeach
+
+                    @php
+                        $tax = $subTotal * $taxRate;
+                        $grandTotal = $subTotal + $tax + $deliveryCharges;
+                    @endphp
+
+                    <tr>
+                        <td class="total">Sub Total</td>
+                        <td class="total">${{ number_format($subTotal, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="total">Tax (10%)</td>
+                        <td class="total">${{ number_format($tax, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="total">Delivery Charges</td>
+                        <td class="total">${{ number_format($deliveryCharges, 2) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="total">Grand Total</td>
+                        <td class="total" id="grandTotal">${{ number_format($grandTotal, 2) }}</td>
+                    </tr>
+                </table>
+                <div id="card-element"></div>
+                <div style="margin:20px 0;" id="card-errors" role="alert"></div>
+                <button class="order-btn btn btn-success w-100" id="submitPayment">PLACE ORDER</button>
             </div>
         </div>
-        
-        <div class="form-group">
-            <div>
-                <label>Street address *</label>
-                <input type="text" name="street_address" id="address" placeholder="House number and street name">
-            </div>
-            <div>
-                <label>Apartment, suite, unit (optional)</label>
-                <input type="text" name="apartment" id="apartment" placeholder="Apartment, suite, unit, etc. (optional)">
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <div>
-                <label>ZIP Code *</label>
-                <input type="text" name="zip_code" id="zip_code">
-            </div>
-            <div>
-                <label>Phone *</label>
-                <input type="text" name="phone" id="phone" placeholder="(656) 565-6565">
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <div>
-                <label>Email address *</label>
-                <input type="email" name="email" id="email">
-            </div>
-        </div>
-        
-        <div id="card-element"></div>
-        <div id="card-errors" role="alert"></div>
-        <div class="order-container">
-    <h2>Orders detail</h2>
-    <table>
-        <tr>
-            <th>Product</th>
-            <th>Price</th>
-        </tr>
-        @php
-            $subTotal = 0;
-            $taxRate = 0.10; // 10% Tax
-            $deliveryCharges = session('delivery_charges', 20); // Default $20
-        @endphp
-
-        @foreach(session('cart', []) as $item)
-            @php
-                $itemTotal = $item['price'] * $item['quantity'];
-                $subTotal += $itemTotal;
-            @endphp
-            <tr>
-                <td>{{ $item['name'] }}</td>
-                <td>${{ number_format($itemTotal, 2) }}</td>
-            </tr>
-        @endforeach
-
-        @php
-            $tax = $subTotal * $taxRate;
-            $grandTotal = $subTotal + $tax + $deliveryCharges;
-        @endphp
-
-        <tr>
-            <td class="total">Sub Total</td>
-            <td class="total">${{ number_format($subTotal, 2) }}</td>
-        </tr>
-        <tr>
-            <td class="total">Tax (10%)</td>
-            <td class="total">${{ number_format($tax, 2) }}</td>
-        </tr>
-        <tr>
-            <td class="total">Delivery Charges</td>
-            <td class="total">${{ number_format($deliveryCharges, 2) }}</td>
-        </tr>
-        <tr>
-            <td class="total">Grand Total</td>
-            <td class="total" id="grandTotal">${{ number_format($grandTotal, 2) }}</td>
-        </tr>
-    </table>
-
-    <button class="order-btn" id="submitPayment">PLACE ORDER</button>
+    </div>
 </div>
-</form>
-<!-- ✅ Order Success Popup Modal -->
+
+
+
 <div id="orderSuccessModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -235,12 +245,12 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let placeOrderBtn = document.getElementById("placeOrderBtn");
+        let placeOrderBtn = document.getElementById("submitPayment");
         let modal = document.getElementById("orderSuccessModal");
         let closeBtn = document.querySelector(".close");
 
         placeOrderBtn.addEventListener("click", function () {
-            // Show modal after placing the order
+
             setTimeout(() => {
                 modal.style.display = "flex";
             }, 500);
@@ -264,7 +274,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    // Initialize Stripe
+
     var stripe = Stripe("{{ env('STRIPE_KEY') }}");
     var elements = stripe.elements();
     var card = elements.create("card");
@@ -284,6 +294,7 @@
         var state = $('#state').val();
         var city = $('#city').val();
         var street_address = $('#street_address').val();
+    
         var apartment = $('#apartment').val();
         var zip_code = $('#zip_code').val();
         var phone = $('#phone').val();
@@ -292,10 +303,13 @@
         let cartItems = [];
         $("table tr").each(function (index) {
             if (index > 0 && index < $("table tr").length - 4) { 
-                let productName = $(this).find("td:first").text().trim();
-                let productPrice = $(this).find("td:last").text().replace("$", "").replace(",", "").trim();
+                let productId = $(this).find("td:first").text().trim(); 
+                let productName = $(this).find("td:eq(1)").text().trim();
+                let quantity = $(this).find("td:eq(2)").text().trim();
+                let productPrice = $(this).find("td:last").text().replace("$", "").replace(",", "").trim(); // Last column (Price)
+
                 if (productName && productPrice) {
-                    cartItems.push({ name: productName, price: parseFloat(productPrice) });
+                    cartItems.push({ id:productId, name: productName, quantity,price: parseFloat(productPrice) });
                 }
             }
         });
@@ -318,26 +332,25 @@
                 $('#card-errors').text(result.error.message);
                 $('#submitPayment').prop("disabled", false);
             } else if (result.token) {
-                processPayment(result.token.id, f_name, l_name, city, state, country, email, phone, zip_code, apartment, cartItems, subTotal, tax, deliveryCharges, grandTotal);
+                processPayment(result.token.id, f_name, l_name, city, state, street_address,country, email, phone, zip_code, apartment, cartItems, subTotal, tax, deliveryCharges, grandTotal);
             }
         });
 
-        function processPayment(stripeToken, f_name, l_name, city, state, country, email, phone, zip_code, apartment, cartItems, subTotal, tax, deliveryCharges, grandTotal) {
-           // let amountInCents = Math.round(parseFloat(grandTotal) * 100);
-
+        function processPayment(stripeToken, f_name, l_name, city, state, street_address,country, email, phone, zip_code, apartment, cartItems, subTotal, tax, deliveryCharges, grandTotal) {
             console.log("Processed total amount (cents):", grandTotal);
-            f_name = "RRRR";
+            
             $.ajax({
                 url: '{{ route('order.store') }}',
                 method: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
-                    stripeToken: stripeToken, // ✅ Sending Stripe token
+                    stripeToken: stripeToken,
                     f_name: f_name,
                     l_name: l_name,
                     city: city,
                     state: state,
                     country: country,
+                    street_address: street_address,
                     email: email,
                     phone: phone,
                     zip_code: zip_code,
@@ -349,6 +362,7 @@
                     grandTotal: grandTotal,
                 },
                 success: function(response) {
+                    location.reload();
                     if (response.success) {
                         toastr.success("Your order has been placed successfully!");
                         setTimeout(function() {
@@ -367,6 +381,11 @@
             });
         }
     });
+
+
+
+
+    
 </script>
 
 @endsection

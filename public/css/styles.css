@@ -1367,7 +1367,7 @@ a.text-white {
   font-weight: 500;
   line-height: 120px;
   display: block;
-  font-size: 18px;
+  font-size: 16px;
 }
 .header .header-inner .nav-list .item::before {
   content: "\f06c";
@@ -1553,6 +1553,25 @@ a.text-white {
   font-weight: 600;
   font-size: 14px;
   top: -9px;
+  right: -7px;
+}.header .header-inner .header-right .icon-wrap .icon.wg-bag1::after {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  content: "3";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--Secondary);
+  color: var(--Text-5);
+  font-weight: 600;
+  font-size: 14px;
+  top: 24px;
   right: -7px;
 }
 .header .header-inner .header-right .wg-welcome {

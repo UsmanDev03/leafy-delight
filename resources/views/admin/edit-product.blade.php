@@ -35,6 +35,10 @@
                         <input type="text" name="sec2_tags" class="form-control" value="{{ old('sec2_tags', $product->sec2_tags) }}">
                     </div>
                     <div class="form-group">
+                        <label>Discount Price</label>
+                        <input type="text" name="discount_price" class="form-control" value="{{ old('discount_price', $product->discount_price) }}">
+                    </div>
+                    <div class="form-group">
                         <label>Thumbnail Image</label>
                         <input type="file" name="sec3_img1" class="form-control">
                         @if($product->sec3_img1)

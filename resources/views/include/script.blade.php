@@ -15,6 +15,8 @@
     <script type="text/javascript" src="{{asset('js/Splitetext.js')}}"></script>
     <script type="text/javascript" src="{{asset('js/main.js')}}"></script>
     <!-- /Javascript -->
+<!-- noUiSlider JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.js"></script>
 
     <script>
         // Add event listeners to all quantity controls

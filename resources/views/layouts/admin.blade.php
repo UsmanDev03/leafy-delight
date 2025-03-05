@@ -176,6 +176,20 @@
                     </li>
                    
 
+                    <li class="menu-header">Orders List</li>
+                    <li class="dropdown">
+                        <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-shopping-cart"></i><span>Orders List</span></a>
+                        <ul class="dropdown-menu">
+                        <li class=""><a class="nav-link" href="{{route('orders.index')}}">All Orders </a></li> 
+                        </ul>
+                    </li>
+                    <li class="menu-header">Contact Responses</li>
+                    <li class="dropdown">
+                        <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-comments"></i> <span>Contact Responses</span></a>
+                        <ul class="dropdown-menu">
+                        <li class=""><a class="nav-link" href="{{route('contact.index')}}">All Responses</a></li> 
+                        </ul>
+                    </li>
                     <li class="menu-header">Setting</li>
                     <li class="dropdown">
                         <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-gear"></i> <span>General Setting</span></a>

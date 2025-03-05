@@ -11,6 +11,6 @@ class Order extends Model
 
     protected $fillable = [
         'first_name', 'last_name', 'country', 'state', 'city',
-        'street_address', 'apartment', 'zip_code', 'phone', 'email', 'stripe_id'
-    ];
+        'street_address', 'apartment', 'zip_code', 'phone', 'email', 'stripe_id','cart_items',
+        'sub_total','tax','delivery_charges','grand_total','status'    ];
 }

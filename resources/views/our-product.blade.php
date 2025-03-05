@@ -167,69 +167,61 @@
                          
                               
                             
-                            <div class="sidebar-item ">
-                                <h5 class="sb-title">
-                                    Filter by Price
-                                </h5>
-                                <div class="sb-content sb-filter-price">
-                                    <div class="range-slider">
-                                        <div id="range-two-val"></div>
-                                        <div class="bottom">
-                                            <div class="price-wrap">
-                                                <span class="text font-nunito">
-                                                    Price:
-                                                </span>
-                                                <div class="value">
-                                                    <div id="skip-value-lower"></div>
-                                                    <span class="line">
-
-
-                                                    </span>
-                                                    <div id="skip-value-upper"></div>
-                                                </div>
-                                            </div>
-                                            <a href="#"
-                                                class="tf-btn-read btn-filter font-worksans fw-5 hover-text-4">Filter</a>
+                        <div class="sidebar-item">
+                        <h5 class="sb-title">Filter by Price</h5>
+                        <div class="sb-content sb-filter-price">
+                            <div class="range-slider">
+                                <div id="range-two-val"></div>
+                                <div class="bottom">
+                                    <div class="price-wrap">
+                                        <span class="text font-nunito">Price:</span>
+                                        <div class="value">
+                                            <div id="skip-value-lower">10</div>
+                                            <span class="line"></span>
+                                            <div id="skip-value-upper"></div>
                                         </div>
                                     </div>
-
+                                    <a href="#" id="applyFilter" class="tf-btn-read btn-filter font-worksans fw-5 hover-text-4">Filter</a>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    
+
+
 
                         
 
                             <div class="sidebar-item sb-category">
                                 <h5 class="sb-title">Weight</h5>
                                 <div class="sb-content" id="padding-filter">
-                                  <ul class="category-list">
-                                    <li class="item">
-                                        <label class="animated-checkbox" id="items-filters" >
-                                          <input type="checkbox">
-                                          <span class="checkmark"></span>
-                                          <a onclick="toggleCheckbox(this)" class="list-padding-top" >100g</a>
-                                        </label>
-                                      </li>
-                                    
-                                    <li class="item">
-                                      <label class="animated-checkbox" id="items-filters">
-                                        <input type="checkbox">
-                                        <span class="checkmark"></span>
-                                        <a onclick="toggleCheckbox(this)">80g</a>
-                                      </label>
-                                    </li>
-                                    
-                                    
-                                    <li class="item">
-                                        <label class="animated-checkbox" id="items-filters" >
-                                          <input type="checkbox">
-                                          <span class="checkmark"></span>
-                                          <a onclick="toggleCheckbox(this)" class="list-padding" >75g</a>
-                                        </label>
-                                      </li>
-                                    
-                                  </ul>
+                                    <ul class="category-list">
+                                        <li class="item">
+                                            <label class="animated-checkbox">
+                                                <input type="checkbox" onclick="filterByWeight('100')">
+                                                <span class="checkmark"></span>
+                                                <a class="list-padding-top">100g</a>
+                                            </label>
+                                        </li>
+                                        <li class="item">
+                                            <label class="animated-checkbox">
+                                                <input type="checkbox" onclick="filterByWeight('80')">
+                                                <span class="checkmark"></span>
+                                                <a>80g</a>
+                                            </label>
+                                        </li>
+                                        <li class="item">
+                                            <label class="animated-checkbox">
+                                                <input type="checkbox" onclick="filterByWeight('75')">
+                                                <span class="checkmark"></span>
+                                                <a class="list-padding">75g</a>
+                                            </label>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
+
 
                             <div class="sidebar-item sb-latest-new">
                                 <h5 class="sb-title">
@@ -247,7 +239,10 @@
                                                     {{$latesproduct->sec1_title}}
                                                 </a>
                                                 <div class="pricing-star">
-                                                    <span class=" price font-worksans fw-6">{{$latesproduct->sec1_price}}</span>
+                                                @foreach (json_decode($latesproduct->sec4_weight_price, true) ?? [] as $item)
+
+                                                <span class=" price font-worksans fw-6">${{ $item['price'] }}</span>
+                                                @endforeach
                                                     <div class="wg-rating">
                                                         <i class="fa-solid fa-star"></i>
                                                         <i class="fa-solid fa-star"></i>
@@ -303,6 +298,8 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Products Container -->
+                    <div id="product-list"></div>
                         <div class="wg-shop-content ">
                             <div class="grid-layout-3 gap-30-20" id="images-content">
                                 @foreach($ourproducts as $ourproduct)
@@ -317,9 +314,14 @@
                                     </a>
                                     <div class="pricing-star">
                                         <div class="price-wrap">
-
-                                            <span class=" price-1">{{$ourproduct->sec1_del_price}}</span>
-                                            <span class=" price-2">{{$ourproduct->sec1_price}}</span>
+                                        @if($ourproduct->discount_price)          
+                                                <span class=" price-1">${{$ourproduct->discount_price}}</span>
+                                                @else
+                                                {{$ourproduct->discount_price}}
+                                                @endif
+                                        @foreach (json_decode($ourproduct->sec4_weight_price, true) ?? [] as $item)
+                                        <span class=" price-2">${{ $item['price'] }}</span>
+                                        @endforeach
                                         </div>
                                         <div class="wg-rating">
                                             <i class="fa-solid fa-star"></i>
@@ -340,15 +342,23 @@
                                             </div>
                                             <i class="fa-solid fa-cart-shopping"></i>
                                         </a>
-                                        <a href="#" class="icon white-list">
-                                            <div class="tt-text">
+                                        @php
+                                            $sec4_weight_price = json_decode($ourproduct->sec4_weight_price, true);
+                                            $price = is_array($sec4_weight_price) ? ($sec4_weight_price[0]['price'] ?? 0) : 0;
+                                        @endphp
 
-                                                <p>
-                                                    Add Whitelist
-                                                </p>
+                                        <button class="add-to-wishlist icon white-list"
+                                            data-id="{{ $ourproduct->id }}" 
+                                            data-name="{{ $ourproduct->sec1_title }}"
+                                            data-img="{{ asset('storage/' . $ourproduct->sec3_img1) }}"
+                                            data-price="{{ $price }}">
+
+                                            
+                                            <div class="tt-text">
+                                                <p>Add to Wishlist</p>
                                             </div>
                                             <i class="fa-solid fa-heart"></i>
-                                        </a>
+                                        </button>
                                         <a  class="icon view-product" href="{{route('product-detail',$ourproduct->slug)}}" onclick="showFullScreenSlider(this)" >
                                             <div class="tt-text">
 
@@ -498,5 +508,253 @@
             </div>
         </section>
         <!-- /.Section our expertise -->
-  
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $(".add-to-wishlist").click(function() {
+        let productId = $(this).data('id');
+        let productName = $(this).data('name');
+        let productImg = $(this).data('img');
+        let productPrice = $(this).data('price');
+        //alert(productPrice);
+        //alert(productName);
+        $.ajax({
+            url: "{{ route('wishlist.add') }}",
+            type: "POST",
+            data: {
+                product_id: productId,
+                product_name: productName,
+                product_Img: productImg,
+                product_price: productPrice,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    alert(response.message);
+                } else if (response.status === 'exists') {
+                    alert('This item is already in your wishlist.');
+                }
+            },
+            error: function(xhr) {
+                alert("Error: " + xhr.responseText);
+            }
+        });
+    });
+});
+</script>
+<script>
+    function filterByWeight(weight) {
+        $.ajax({
+            url: "{{ route('filter.by.weight') }}",
+            method: "GET",
+            data: { weight: weight },
+            beforeSend: function () {
+                $('#images-content').html('<p>Loading products...</p>');
+            },
+            success: function (response) {
+        console.log("AJAX Response:", response);
+
+        // Convert Object to Array
+        let productsArray = Object.values(response.products);
+
+        if (productsArray.length > 0) {
+            let productsHTML = '';
+            productsArray.forEach(function(product) {
+                let priceHTML = ''; 
+                if (product.sec4_weight_price) {
+                    try {
+                        let prices = JSON.parse(product.sec4_weight_price); // JSON parse
+                        prices.forEach(item => {
+                            priceHTML += `<span class="price">${item.price}</span>`; // Append each price
+                        });
+                    } catch (error) {
+                        console.error("Error parsing sec4_weight_price:", error);
+                    }
+                }
+                if(product.discount_price)
+                {
+                    let dis = `<b>$</b><span class="price-1">${product.discount_price}</span>`
+                }else{
+                    dis =  `<span class="price-1">${product.discount_price}</span>`
+                }
+                let productHTML = `
+                    <div class="card-product style-2 wow fadeInUp" data-wow-delay="0s">
+                        <div class="image">
+                            <img src="/storage/${product.sec3_img1}" alt="" class="lazyload images-sizing">
+                        </div>
+                        <a href="#" class="name-product font-worksans hover-text-4">
+                            ${product.sec1_title}
+                        </a>
+                        <div class="pricing-star">
+                            <div class="price-wrap">
+                            
+                                ${dis}
+                                <b>$</b><span class="price-2">${priceHTML}</span>
+                            </div>
+                            <div class="wg-rating">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="product-btn-list">
+                            <a href="./Product-single.html" class="icon shoping">
+                                <div class="tt-text">
+                                    <p>Add to cart</p>
+                                </div>
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </a>
+                            <button class="add-to-wishlist icon white-list"
+                                data-id="${product.id}" 
+                                data-name="${product.sec1_title}"
+                                data-img="/storage/${product.sec3_img1}"
+                                data-price="${priceHTML}">
+                                <div class="tt-text">
+                                    <p>Add to Wishlist</p>
+                                </div>
+                                <i class="fa-solid fa-heart"></i>
+                            </button>
+                            <a class="icon view-product" href="/product-detail/${product.slug}" onclick="showFullScreenSlider(this)">
+                                <div class="tt-text">
+                                    <p>Quick View</p>
+                                </div>
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                productsHTML += productHTML;
+            });
+
+            $('#images-content').html(productsHTML);
+        } else {
+            $('#images-content').html('<p>No products found for this weight.</p>');
+        }
+    }
+    ,
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+                alert("Error fetching products. Please check console for details.");
+            }
+        });
+    }
+
+
+
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+   $(document).ready(function () {
+    $("#applyFilter").on("click", function (e) {
+        e.preventDefault();
+
+        let minPrice = $("#skip-value-lower").text().replace(/\D/g, '');
+        let maxPrice = $("#skip-value-upper").text().replace(/\D/g, '');
+        
+
+        console.log("Min Price:", minPrice);
+        console.log("Max Price:", maxPrice);
+
+        $.ajax({
+            url: "/filter-products",
+            method: "GET",
+            data: { min_price: minPrice, max_price: maxPrice },
+            dataType: "json",
+            success: function (response) {
+                console.log("AJAX Response:", response);
+
+                let productsArray = Object.values(response.products);
+
+                if (productsArray.length > 0) {
+                    let productsHTML = '';
+                    productsArray.forEach(function(product) {
+                        let priceHTML = ''; 
+                        if (product.sec4_weight_price) {
+                            try {
+                                let prices = JSON.parse(product.sec4_weight_price);
+                                prices.forEach(item => {
+                                    priceHTML += `<span class="price">${item.price}</span>`;
+                                });
+                            } catch (error) {
+                                console.error("Error parsing sec4_weight_price:", error);
+                            }
+                        }
+                        if(product.discount_price)
+                {
+                    let dis = `<b>$</b><span class="price-1">${product.discount_price}</span>`
+                }else{
+                    dis =  `<span class="price-1">${product.discount_price}</span>`
+                }
+                        let productHTML = `
+                            <div class="card-product style-2 wow fadeInUp" data-wow-delay="0s">
+                                <div class="image">
+                                    <img src="/storage/${product.sec3_img1}" alt="" class="lazyload images-sizing">
+                                </div>
+                                <a href="#" class="name-product font-worksans hover-text-4">
+                                    ${product.sec1_title}
+                                </a>
+                                <div class="pricing-star">
+                                    <div class="price-wrap">
+                                    
+
+                                      ${dis}
+                                        <b>$</b><span class="price-2">${priceHTML}</span>
+                                    </div>
+                                    <div class="wg-rating">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                    </div>
+                                </div>
+                                <div class="product-btn-list">
+                                    <a href="./Product-single.html" class="icon shoping">
+                                        <div class="tt-text">
+                                            <p>Add to cart</p>
+                                        </div>
+                                        <i class="fa-solid fa-cart-shopping"></i>
+                                    </a>
+                                    <button class="add-to-wishlist icon white-list"
+                                        data-id="${product.id}" 
+                                        data-name="${product.sec1_title}"
+                                        data-img="/storage/${product.sec3_img1}"
+                                        data-price="${product.sec1_price}">
+                                        <div class="tt-text">
+                                            <p>Add to Wishlist</p>
+                                        </div>
+                                        <i class="fa-solid fa-heart"></i>
+                                    </button>
+                                    <a class="icon view-product" href="/product-detail/${product.slug}" onclick="showFullScreenSlider(this)">
+                                        <div class="tt-text">
+                                            <p>Quick View</p>
+                                        </div>
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        `;
+                        productsHTML += productHTML;
+                    });
+
+                    $('#images-content').html(productsHTML);
+                } else {
+                    $('#images-content').html('<p>No products found for this weight.</p>');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+                alert("Error fetching products. Please check console for details.");
+            }
+        });
+    });
+});
+
+</script>
+
 @endsection

@@ -19,6 +19,7 @@ class Product extends Model
         'sec3_imgs',
         'sec4_weight_price',
         'sec5_tray_price',
+        'discount_price',
         'slug',
     ];
 }

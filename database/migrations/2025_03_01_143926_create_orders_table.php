@@ -17,8 +17,14 @@ return new class extends Migration {
             $table->string('apartment')->nullable();
             $table->string('zip_code');
             $table->string('phone');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('stripe_id')->nullable(); // For Stripe Payment ID
+            $table->string('cart_items')->nullable(); // For Stripe Payment ID
+            $table->string('sub_total')->nullable(); // For Stripe Payment ID
+            $table->string('tax')->nullable(); // For Stripe Payment ID
+            $table->string('delivery_charges')->nullable(); // For Stripe Payment ID
+            $table->string('grand_total')->nullable(); // For Stripe Payment ID
+            $table->string('status')->nullable(); // For Stripe Payment ID
             $table->timestamps(); // Created_at & Updated_at
         });
     }

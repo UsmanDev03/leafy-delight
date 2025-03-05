@@ -235,7 +235,7 @@
                     <div class="cart-item" data-key="{{ $key }}">
                         <img src="{{ $item['image'] }}" alt="Product Image">
                         <div class="item-details">
-                            <h2>{{ $item['name'] }}</h2>
+                            <h2 style="width:450px;">{{ Illuminate\Support\Str::limit($item['name'], 50) }}</h2>
 
                             <!-- Quantity Update -->
                             <div class="quantity-selector">

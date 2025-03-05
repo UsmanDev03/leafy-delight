@@ -28,9 +28,13 @@
                             <label>Available Stock</label>
                             <input type="text" name="sec2_available_stock" class="form-control" required>
                         </div>
-                        <div class="form-group col-lg-4 col-md-6">
+                        <div class="form-group col-lg-2 col-md-3">
                             <label>Tags</label>
                             <input type="text" name="sec2_tags" class="form-control">
+                        </div>
+                        <div class="form-group col-lg-2 col-md-3">
+                            <label>Discount Price</label>
+                            <input type="text" name="discount_price" class="form-control">
                         </div>
 
                         <div class="form-group col-lg-4 col-md-6">

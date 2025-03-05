@@ -1,5 +1,9 @@
 @extends('include.main')
 @section('content')
+         
+
+
+
         <!-- Page-title -->
         <div class="page-title page-contact-us  ">
             <div class="rellax" data-rellax-speed="5">
@@ -113,60 +117,57 @@
                                             <img class="tf-animate-1" src="images/item/leaves-2.png" alt="" />
                                         </div>
                                     </div>
-                                    <form id="contactform" method="post" action="https://themesflat.co/html/Leafy Delights/contact/contact-process.php"
-                                        novalidate="novalidate" class="form-send-message style-2">
+                                    @if(session('success'))
+                                        <div id="success-alert" class="alert alert-success">
+                                            {{ session('success') }}
+                                        </div>
+
+                                        <script>
+                                            setTimeout(function() {
+                                                document.getElementById("success-alert").style.display = "none";
+                                            }, 3000); // 3 seconds
+                                        </script>
+                                    @endif
+                                    <form id="contactform" method="post" action="{{ route('contact.submit') }}" class="form-send-message style-2">
+                                        @csrf
                                         <div class="cols style-2 mb-15">
                                             <fieldset>
-                                                <input type="text" class="form-control" id="name bginput-feilds" name="name"
-                                                    placeholder="Name*" aria-required="true" required />
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Name*" required />
                                             </fieldset>
                                             <fieldset>
-                                                <input type="email" class="form-control email" id="mail" name="mail"
-                                                    placeholder="Email*" required />
+                                                <input type="email" class="form-control email" id="mail" name="email" placeholder="Email*" required />
                                             </fieldset>
                                         </div>
                                         <div class="cols style-2 mb-15">
                                             <fieldset>
-                                                <input type="text" class="form-control" id="phone" name="phone"
-                                                    placeholder="Phone*" aria-required="true" required />
+                                                <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone*" required />
                                             </fieldset>
                                             <fieldset class="dropdown">
-                                                <select name="text" id="Support">
-                                                    <option value="You need to suport?" selected="">You need to
-                                                        suport?
-                                                    </option>
-                                                    <option value="You need to suport? 1">You need to suport? 1
-                                                    </option>
-                                                    <option value="You need to suport? 2">You need to suport? 2
-                                                    </option>
-                                                    <option value="You need to suport? 3">You need to suport? 3
-                                                    </option>
+                                                <select name="reason" id="Support">
+                                                    <option value="" selected disabled>You need support?</option>
+                                                    <option value="General Inquiry">General Inquiry</option>
+                                                    <option value="Technical Support">Technical Support</option>
+                                                    <option value="Billing">Billing</option>
                                                 </select>
                                             </fieldset>
                                         </div>
                                         <div class="cols mb-30">
                                             <fieldset>
-                                                <textarea name="message" id="message"
-                                                    placeholder="Message..."></textarea>
+                                                <textarea name="message" id="message" placeholder="Message..."></textarea>
                                             </fieldset>
                                         </div>
                                         <div class="checkbox-item send-wrap">
-                                            <label class="mb-0">
-                                                <span class="text font-nunito">Agree to our terms and
-                                                    conditions</span>
-                                                <input type="checkbox" class="checkbox-item" checked>
-                                                <span class="btn-checkbox"></span>
+                                            <label>
+                                                <input type="checkbox" required> 
+                                                <span>Agree to our terms and conditions</span>
                                             </label>
-                                            <button type="submit" class="tf-btn ">
-                                                <span class="text-style">
-                                                    Send Message
-                                                </span>
-                                                <span class="icon">
-                                                    <i class="icon-arrow_right"></i>
-                                                </span>
+                                            <button type="submit" class="tf-btn">
+                                                <span class="text-style">Send Message</span>
+                                                <span class="icon"><i class="icon-arrow_right"></i></span>
                                             </button>
                                         </div>
                                     </form>
+
                                 </div>
                             </div>
                         </div>

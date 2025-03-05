@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('sec3_imgs')->nullable();
             $table->string('sec4_weight_price')->nullable();
             $table->string('sec5_tray_price')->nullable();
+            $table->string('discount_price')->nullable();
             $table->string('slug');
             $table->timestamps();
         });

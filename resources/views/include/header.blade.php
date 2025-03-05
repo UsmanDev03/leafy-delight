@@ -1,12 +1,16 @@
 @php 
 $genral_setting = \App\Models\GeneralSetting::first();
 $cartCount = count(session('cart', []));
+$wishlistCount = count(session('wishlist', []));
+
 @endphp
 <style>
 .header .header-inner .header-right .icon-wrap .icon.wg-bag::after {
     content: "{{ $cartCount }}"!important;
 }
-
+.header .header-inner .header-right .icon-wrap .icon.wg-bag1::after {
+    content: "{{ $wishlistCount }}"!important;
+}
 </style>
 <div id="wrapper">
 
@@ -392,11 +396,16 @@ $cartCount = count(session('cart', []));
                                         <i class="icon-magnifying-glass fs-21"></i>
                                     </a>
                                     <a href="{{route('cart.show')}}" class="icon wg-bag">
-                                   
-
+                                        
+                                        
                                         <i class="icon-basket"></i>
                                     </a>
+                                    <a class="icon header-wishlist wg-bag1" href="{{route('wishlist.view')}}">
+                                        <i class="bi bi-heart fs-21"></i>
+                                    </a>
+                                    
                                 </div>
+                                
                                 <div class="wg-welcome btn-open-welcome">
                                     <i class="icon-fences-icon fs-24"></i>
                                 </div>
@@ -863,6 +872,7 @@ $cartCount = count(session('cart', []));
                                         <a class="icon header-search" href="#canvasSearch" data-bs-toggle="offcanvas">
                                             <i class="icon-magnifying-glass fs-21"></i>
                                         </a>
+                                        
                                         <a href="#" class="icon wg-bag">
                                             <i class="icon-basket"></i>
                                         </a>
